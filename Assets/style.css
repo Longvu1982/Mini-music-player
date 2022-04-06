@@ -175,7 +175,8 @@ li img {
     right: 0;
     bottom: -590px;
     height: 580px;
-    border-radius: 30px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
     background-color: rgba(100,100,100, 0.25);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
