@@ -56,4 +56,18 @@ const songs =
         },
     
     ]
-console.log(songs)
+
+const $ = document.querySelector.bind(document)
+const $$ = document.querySelectorAll.bind(document)
+
+const expandBtn = $('.control-button')
+const closeBtn = $('.close-btn')
+const expandSection = $('.expand-section')
+
+expandBtn.addEventListener('click', function(){
+    expandSection.classList.toggle('active')
+})
+closeBtn.onclick = ()=> {
+    expandSection.classList.toggle('active')
+
+}

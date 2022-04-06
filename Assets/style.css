@@ -18,11 +18,11 @@ body {
     min-height: 100vh;
 }
 .container {
-    width: 380px;
+    width: 320px;
     height: 600px ;
     background-color: red;
     overflow: hidden;
-    border-radius: 20px;
+    border-radius: 30px;
     padding: 20px;
     background-color: #0b0704;
     box-shadow: 6px 12px 20px #0b0704;
@@ -84,6 +84,9 @@ ul {
 }
 ul::-webkit-scrollbar{
     width: 0;
+    display: none;
+    appearance: none;
+    -webkit-appearance: none;
 }
 li {
     border-radius: 50%;
@@ -164,8 +167,160 @@ li img {
     opacity: 0.6;
     font-weight: 200;
     margin-left: 8px;
+    cursor: pointer;
+}
+.expand-section {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -590px;
+    height: 580px;
+    border-radius: 30px;
+    background-color: rgba(100,100,100, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 2;
+    transition: all 0.5s ease-in-out;
+}
+.expand-section.active {
+    bottom: 0;
+}
+.expand-section .header {
+    width: 100%;
+    position: relative;
+    height: 320px;
+}
+.expand-section .header .thumbnail {
+    width: 230px;
+    height: 230px;
+    overflow: hidden;
+    border-radius: 50%;
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.expand-section .header .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+.expand-section .header .thumbnail img::before {
+    content: "";
+    background-color: red;
+    width: 200px;
+    height: 200px;
+    border-radius: 22% 41% 22% 30% / 31% 46% 22% 28% ;
+    position: absolute;
+    z-index: 5;
 }
 
+.expand-section .header .background {
+    width: 220px;
+    height: 250px;
+    position: absolute;
+    top: 35px;
+    left: 49%;
+    transform: translateX(-50%);
+    background-image: linear-gradient(0deg, #fd7ca5 0%, #ee59cd 100% );
+    border-radius: 53% 76% 57% 42% / 49% 57% 33% 51% ;
+}
+.expand-section .header .background::before {
+    content: "";
+    background-image: linear-gradient(30deg, #4db1e7 0%, #3aaded 100%);
+    width: 230px;
+    height: 230px;
+    position: absolute;
+    top: 20px;
+    left: 55%;
+    transform: translateX(-50%);
+    border-radius: 50% 50% 36% 64% / 50% 67% 33% 50% ;
 
+}
+.expand-section .information {
+    width: 100%;
+    padding: 15px 30px;
+    color: #e5e5e5;
+}
+.expand-section .author-price {
+    display: flex;
+    margin-top: 3px;
+    font-size: 15px;
+}
+.expand-section .author {
+    color: #b5b5b5;
+    margin-right: 10px;
+}
+.expand-section .seek-section {
+    padding: 0px 30px;
+}
+input[type=range] {
+    height: 3px;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    background-color: #b5b5b58f;
+    cursor: pointer;
+    position: relative;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; 
+    appearance: none;
+    width: 10px; 
+    height: 0px; 
+    background-color: #e5e5e5;
+    border-radius: 50%;
+    cursor: pointer;
+}
+input[type=range]:hover::-webkit-slider-thumb {
+    height: 10px;
+}
+input[type=range]::before {
+    content: "";
+    position: absolute;
+    top:0;
+    left:0;
+    bottom: 0;
+    right: 50%;
+    background-color: #e5e5e5;
+}
+.expand-section .time-section {
+    padding: 0px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #b5b5b5;
 
-
+}
+.expand-section .control-section {
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #e5e5e5;
+    font-size: 16px;
+}
+.expand-section .control-section >* {
+    cursor: pointer;
+}
+.expand-section .play-pause-btn {
+    text-align: center;
+    line-height: 50px;
+    background-color: #e5e5e5;
+    font-size: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: #2f2d29;
+}
+.expand-section .play-pause-btn i {
+    margin-left: 3px;
+}
+.expand-section .loop-btn, .expand-section .close-btn {
+    color: rgba(255,255,255,0.5);
+}
+.expand-section .next-btn, .expand-section .prev-btn {
+    font-size: 20px;
+}
