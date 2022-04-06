@@ -49,7 +49,7 @@ body {
     font-weight: bold;
     font-size: 22px;
     line-height: 35px;
-    margin: 20px 0;
+    margin: 20px 0 10px;
 }
 .song-list .song-list-header {
     width: 50%;
@@ -81,6 +81,7 @@ ul {
     height: 400px;
     overflow-y: auto;
     justify-content: center;
+    padding-bottom: 120px;
 }
 ul::-webkit-scrollbar{
     width: 0;
@@ -111,7 +112,7 @@ li img {
     z-index: 1;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
-    padding: 0 20px;
+    padding:  0 20px 0 30px;
     display:flex;
     flex-direction: row;
     align-items:center;
@@ -125,11 +126,11 @@ li img {
     
 }
 .play-section .song-img {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 20px;
     overflow: hidden;
-    margin-right: 20px;
+    margin-right: 15px;
 }
 .play-section .song-img img {
     width: 100%;
@@ -141,14 +142,24 @@ li img {
     color: #d5d5d5;
     font-weight: 700;
     flex: 1;
+    font-size: 14px;
+}
+.play-section .song-detail .song-name {
+    width: 120px;
+    overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 1; /* number of lines to show */
+           line-clamp: 1; 
+   -webkit-box-orient: vertical;
 }
 .play-section .song-detail .song-author {
     color: #d3d3d3;
     font-weight: 400;
 }
 .play-section .main-play-button, .play-section .control-button {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     justify-self: flex-end;
     display: flex;
     align-items: center;
@@ -156,10 +167,17 @@ li img {
     color: #d5d5d5;
     font-size: 16px;   
     position: relative;
+    user-select: none;
 }
+.control-button:active, .close-btn:hover {
+    color: #e5e5e5;
+}
+
 .play-section .main-play-button {
     background-color: #0b0704;
     border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
 }
 
 .play-section .control-button {
@@ -224,8 +242,9 @@ li img {
     top: 35px;
     left: 49%;
     transform: translateX(-50%);
-    background-image: linear-gradient(0deg, #fd7ca5 0%, #ee59cd 100% );
-    border-radius: 53% 76% 57% 42% / 49% 57% 33% 51% ;
+    background-image: linear-gradient(0deg, #fd7ca5b4 0%, #ee59cd 100% );
+    opacity: 0.9;
+    border-radius: 53% 76% 84% 49% / 49% 57% 33% 51% ;
 }
 .expand-section .header .background::before {
     content: "";
@@ -255,15 +274,20 @@ li img {
 }
 .expand-section .seek-section {
     padding: 0px 30px;
+    width: 100%;
+    height: 20px;
+    position: relative;
 }
 input[type=range] {
     height: 3px;
     appearance: none;
     -webkit-appearance: none;
-    width: 100%;
+    width: calc(100% - 60px);
+    top: 2px;
+    transform: translateY(-50% -50%);
     background-color: #b5b5b58f;
     cursor: pointer;
-    position: relative;
+    position: absolute;
 }
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none; 
@@ -273,19 +297,27 @@ input[type=range]::-webkit-slider-thumb {
     background-color: #e5e5e5;
     border-radius: 50%;
     cursor: pointer;
+    transition: all 0.15s linear;
 }
 input[type=range]:hover::-webkit-slider-thumb {
     height: 10px;
 }
-input[type=range]::before {
-    content: "";
-    position: absolute;
-    top:0;
-    left:0;
-    bottom: 0;
-    right: 50%;
+.progress {
+    position: relative;
+    height: 3px;
+    width: 100%;
+    top: 2px;
+    transform: translateY(-50% -50%);
     background-color: #e5e5e5;
+    transition: all 0.1s linear;
+    cursor: pointer;
+    pointer-events: none;
 }
+input[type=range]:hover ~ .progress {
+    height: 4px;
+    top: 1px;
+}
+
 .expand-section .time-section {
     padding: 0px 30px;
     display: flex;
@@ -316,9 +348,7 @@ input[type=range]::before {
     border-radius: 50%;
     color: #2f2d29;
 }
-.expand-section .play-pause-btn i {
-    margin-left: 3px;
-}
+
 .expand-section .loop-btn, .expand-section .close-btn {
     color: rgba(255,255,255,0.5);
 }
