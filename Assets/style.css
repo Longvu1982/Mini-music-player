@@ -31,18 +31,31 @@ body {
 .header-nav {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 }
-
+.header-nav .logo {
+    margin-right: auto;
+}
 .header-nav .logo i {
     color:#935622 ;
     font-size: 20px;
     
 }
-.header-nav .more-action i {
-    color: #7b7b7b;
-    font-size: 20px;
+.header-nav .more-action   {
+    color: #ababab;
+    font-size: 14px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+.header-nav .add-btn  {
+    color: #ababab;
+    font-size: 18px;
+    justify-self: end;    
+    cursor: pointer;
+}
+.header-nav .more-action:active, .header-nav .add-btn:active  {
+    color: #e5e5e5
 }
 .header-dsc {
     color: #c5c5c5;
@@ -75,12 +88,14 @@ body {
 }
 ul {
     display: grid;
-    grid-template-columns: 44% 44%;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
     grid-auto-rows: minmax(min-content, max-content);
     grid-gap: 25px;
     height: 400px;
     overflow-y: auto;
-    justify-content: center;
+    justify-items: center;
+    align-items: center;
     padding-bottom: 120px;
 }
 ul::-webkit-scrollbar{
@@ -90,6 +105,8 @@ ul::-webkit-scrollbar{
     -webkit-appearance: none;
 }
 li {
+    width: 125px;
+    height: 125px;
     border-radius: 50%;
     overflow: hidden;
     aspect-ratio: 1 ;
@@ -112,7 +129,7 @@ li img {
     z-index: 1;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
-    padding:  0 20px 0 30px;
+    padding:  0 7px 0 17px;
     display:flex;
     flex-direction: row;
     align-items:center;
@@ -126,11 +143,13 @@ li img {
     
 }
 .play-section .song-img {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     border-radius: 20px;
     overflow: hidden;
-    margin-right: 15px;
+    margin-right: 10px;
+    animation: spin 5s linear infinite;
+    animation-play-state: paused;
 }
 .play-section .song-img img {
     width: 100%;
@@ -142,7 +161,7 @@ li img {
     color: #d5d5d5;
     font-weight: 700;
     flex: 1;
-    font-size: 14px;
+    font-size: 12px;
 }
 .play-section .song-detail .song-name {
     width: 120px;
@@ -156,6 +175,13 @@ li img {
 .play-section .song-detail .song-author {
     color: #d3d3d3;
     font-weight: 400;
+    width: 120px;
+    overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 1; /* number of lines to show */
+           line-clamp: 1; 
+   -webkit-box-orient: vertical;
 }
 .play-section .main-play-button, .play-section .control-button {
     width: 35px;
@@ -193,8 +219,8 @@ li img {
     right: 0;
     bottom: -590px;
     height: 580px;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
+    border-radius: 25px;
+    overflow: hidden;
     background-color: rgba(100,100,100, 0.25);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -219,11 +245,22 @@ li img {
     left: 50%;
     transform: translateX(-50%);
 }
+
 .expand-section .header .thumbnail img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    50%  {
+        transform: rotate(180deg);
+    }
+    100%  {
+        transform: rotate(360deg);
+    }
 }
 .expand-section .header .thumbnail img::before {
     content: "";
@@ -245,9 +282,10 @@ li img {
     background-image: linear-gradient(0deg, #fd7ca5b4 0%, #ee59cd 100% );
     opacity: 0.9;
     border-radius: 53% 76% 84% 49% / 49% 57% 33% 51% ;
+    animation: change_border 1.5s linear 3s infinite;
+    animation-play-state: paused;
 }
-.expand-section .header .background::before {
-    content: "";
+.expand-section .header .background-child {
     background-image: linear-gradient(30deg, #4db1e7 0%, #3aaded 100%);
     width: 230px;
     height: 230px;
@@ -256,7 +294,17 @@ li img {
     left: 55%;
     transform: translateX(-50%);
     border-radius: 50% 50% 36% 64% / 50% 67% 33% 50% ;
+    animation: change_border 1.5s linear infinite ;
+    animation-play-state: paused;
 
+}
+@keyframes change_border {
+    50% {
+        border-radius: 53% 52% 34% 63% / 49% 42% 33% 61%
+    }
+    75% {
+        border-radius: 41% 52% 34% 63% / 52% 42% 42% 61%
+    }    
 }
 .expand-section .information {
     width: 100%;
@@ -309,7 +357,7 @@ input[type=range]:hover::-webkit-slider-thumb {
     top: 2px;
     transform: translateY(-50% -50%);
     background-color: #e5e5e5;
-    transition: all 0.1s linear;
+    transition: height 0.1s linear;
     cursor: pointer;
     pointer-events: none;
 }

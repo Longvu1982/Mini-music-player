@@ -86,7 +86,16 @@ const songList = $('.song-list-body ul')
 const audio = $('audio')
 const mainBtn = $('.main-play-button')
 const altBtn = $('.play-pause-btn i')
+const altBtnWrap = $('.play-pause-btn')
 const seekBtn = $('input[type = range]')
+const smallImg = $('.song-img')
+const firstBackgr = $('.background')
+const secondBackgr = $('.background-child')
+const nextBtn = $('.next-btn')
+const prevBtn = $('.prev-btn')
+const mainIcon = mainBtn.querySelector('i')
+const loopBtn = $('.loop-btn')
+const downloadBtn = $('.more-action')
 let currentIndex = 0;
 
 
@@ -94,8 +103,8 @@ let currentIndex = 0;
 window.addEventListener('load', () => {
     renderSong();
     loadSong(currentIndex)
+    
 });
-
 // handle expand menu
 expandBtn.addEventListener('click', function () {
     expandSection.classList.toggle('active')
@@ -115,31 +124,47 @@ function renderSong() {
     songList.innerHTML = htmls
 }
 
-//function play-pause
-if(audio.ended) {
-        mainIcon.classList.remove('fa-play')
-        altBtn.classList.remove('fa-play')
-        mainIcon.classList.add('fa-pause')
-        altBtn.classList.add('fa-pause')
+//function playState
+function playState () {
+    mainIcon.classList.remove('fa-play')
+    altBtn.classList.remove('fa-play')
+    mainIcon.classList.add('fa-pause')
+    altBtn.classList.add('fa-pause')
+    // stop spinning
+    smallImg.style.animationPlayState = "running"
+    //stop animate background
+    firstBackgr.style.animationPlayState = "running"
+    secondBackgr.style.animationPlayState = "running"
 }
+
+
+//function pauseState
+function pauseState () {
+    mainIcon.classList.remove('fa-pause')
+    altBtn.classList.remove('fa-pause')
+    mainIcon.classList.add('fa-play')
+    altBtn.classList.add('fa-play')
+     //spin the disk
+     smallImg.style.animationPlayState = "paused"
+     //animate background
+     firstBackgr.style.animationPlayState = "paused"
+     secondBackgr.style.animationPlayState = "paused"
+}
+
+//function play-pause
 mainBtn.addEventListener('click', () => {   
-    const mainIcon = mainBtn.querySelector('i')
     if(!audio.paused && !audio.ended) {
-        mainIcon.classList.remove('fa-pause')
-        altBtn.classList.remove('fa-pause')
-        mainIcon.classList.add('fa-play')
-        altBtn.classList.add('fa-play')
+        pauseState();
         audio.pause();
+       
     }
     else if (audio.paused) {
-        mainIcon.classList.remove('fa-play')
-        altBtn.classList.remove('fa-play')
-        mainIcon.classList.add('fa-pause')
-        altBtn.classList.add('fa-pause')
+        playState();
         audio.play();
+        
     }
 })
-altBtn.onclick = () => {
+altBtnWrap.onclick = () => {
     mainBtn.click();
 }
 
@@ -147,6 +172,7 @@ altBtn.onclick = () => {
 //load the song
 function loadSong(num) {
     audio.src = songs[num].path
+    console.log(audio.currentTime)
     $('.song-img img').src = songs[num].image
     $('.song-detail .song-name').innerText = songs[num].name
     $('.song-detail .song-author').innerText = songs[num].author
@@ -172,12 +198,101 @@ songList.onclick = (e) => {
 }
 
 
-//handle seeking
+//handle seeking and timing
 seekBtn.oninput = (e) =>{
     audio.currentTime = e.target.value / 100 * audio.duration
 }
 audio.ontimeupdate = (e) => {
     seekBtn.value = e.target.currentTime / e.target.duration * 100
-    console.log(e.target.currentTime)
     $('.progress').style.width = `${audio.currentTime / audio.duration * 100}%`
+    $('.time-section .current').innerText = fancyTimeFormat(audio.currentTime)
 }
+audio.onloadeddata = () =>{
+    $('.time-section .duration').innerText = fancyTimeFormat(audio.duration)
+}
+
+//handle next and prev song
+nextBtn.addEventListener('click', () => {
+    currentIndex ++;
+    if (currentIndex == songs.length ) currentIndex = 0;
+    loadSong(currentIndex)
+    mainBtn.click();
+})
+
+prevBtn.addEventListener('click', () => {
+    currentIndex --;
+    if (currentIndex == -1 ) currentIndex = songs.length - 1;
+    loadSong(currentIndex)
+    mainBtn.click();
+})
+
+
+// loop icon change
+let loopState = 0;
+loopBtn.addEventListener('click', () => {
+    if (window.getComputedStyle(loopBtn).color != "rgb(229, 229, 229)") {
+        loopBtn.style.color = "rgb(229, 229, 229)"
+        loopState = 1;
+    }
+    else if (window.getComputedStyle(loopBtn).color == "rgb(229, 229, 229)" && loopBtn.querySelector('i').classList.contains('fa-repeat')) {
+        loopBtn.querySelector('i').classList.remove('fa-repeat')
+        loopBtn.querySelector('i').classList.add('fa-random')
+        loopState = 2;
+    }
+    else if (loopBtn.querySelector('i').classList.contains('fa-random')) {
+        loopBtn.style.color = "rgba(255,255,255,0.5)"
+        loopBtn.querySelector('i').classList.add('fa-repeat')
+        loopBtn.querySelector('i').classList.remove('fa-random')
+        loopState = 0;
+    }
+})
+
+// handle loop
+audio.addEventListener('ended', () => {
+    switch(loopState) {
+        case 0:
+            nextBtn.click();
+            break;         
+        case 1:
+            audio.play();
+            break;
+        case 2:
+            currentIndex = Math.floor(Math.random() * (songs.length - 1));
+            loadSong(currentIndex);
+            mainBtn.click();
+    }
+})
+
+
+// format time from second
+function fancyTimeFormat(duration)
+{   
+    // Hours, minutes and seconds
+    var hrs = ~~(duration / 3600);
+    var mins = ~~((duration % 3600) / 60);
+    var secs = ~~duration % 60;
+
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    var ret = "";
+
+    if (hrs > 0) {
+        ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    }
+
+    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+    ret += "" + secs;
+    return ret;
+}
+
+
+// download song
+downloadBtn.addEventListener('click', () => {
+    var link = document.createElement("a");
+    // If you don't know the name or want to use
+    // the webserver default set name = ''
+    link.setAttribute('download', '');
+    link.href = songs[currentIndex].path;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+})
