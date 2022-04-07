@@ -124,6 +124,13 @@ function renderSong() {
     songList.innerHTML = htmls
 }
 
+//reset seek position
+function reset() {
+    seekBtn.value = 0;
+    $('.progress').style.width = '0%'
+}
+
+
 //function playState
 function playState () {
     mainIcon.classList.remove('fa-play')
@@ -180,8 +187,7 @@ function loadSong(num) {
     $('.information .name').innerText = songs[num].name
     $('.information .author').innerText = songs[num].author
     $('.information .price').innerText = `$${songs[num].price}`
-    seekBtn.value = 0;
-    $('.progress').style.width = '0%'
+    reset();
 }
 
 
@@ -217,8 +223,7 @@ audio.onloadeddata = () =>{
 nextBtn.addEventListener('click', () => {
     currentIndex ++;
     if (currentIndex == songs.length ) currentIndex = 0;
-    seekBtn.value = 0;
-    $('.progress').style.width = '0%'
+    reset();
     loadSong(currentIndex)
     mainBtn.click();
 })
@@ -226,8 +231,7 @@ nextBtn.addEventListener('click', () => {
 prevBtn.addEventListener('click', () => {
     currentIndex --;
     if (currentIndex == -1 ) currentIndex = songs.length - 1;
-    seekBtn.value = 0;
-    $('.progress').style.width = '0%'
+    reset();
     loadSong(currentIndex)
     mainBtn.click();
 })
